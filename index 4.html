@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+	<script src="https://download.affectiva.com/js/3.2.1/affdex.js"></script>
+	<script src="script.js"></script>
+
+	<title>Blinking Morse Code</title>
+	<h1 align="center" >BlinkCode</h1>
+	<style type="text/css">
+		.mainDiv {
+			display: flex;
+			margin: 1.5% 1.5%
+		}
+		.metrics {
+			width: 10%;
+		}
+		.display {
+			width: 55%;
+		}
+		.code {
+			width: 35%;
+		}
+
+	</style>
+</head>
+
+<body>
+	<div class="Heading" align="center">
+		<button id="start" onclick="onStart()">Start</button>
+		<button id="stop" onclick="onStop()">Stop</button>
+	</div>
+
+	<div class="mainDiv" > 
+		<div class="metrics">
+			<p><span id="eC"></span></p>
+			<p><span id="bR"></span></p>
+			<p><span id="cR"></span></p>
+		</div>
+		<div class="display" id="display" >
+			<div id="affdex_elements" width="450" height="450" display="flex"></div>
+			<div id="notepad" width="450" height="450" style="display: none; overflow: hidden;">
+				<h4 id="welcome_tutorial" align="center" >Welcome to the Tutorial </h4>
+				<h4 id="tutorial_instructions" align="center"></h4>
+				<h2 id="English_Message"></h2>
+<!-- 				<h1 id="tutorial_text" align="center" ></h1> -->
+			</div>
+<!-- 			<p><span id="Clock"></span></p> -->
+			<p><span id="Morse_Message"></span></p>
+		</div>
+
+		<div class = "code">
+			<img src="morse_code.png" align="right" width = "350" height="480">
+		</div>
+	</div>
+	<!-- <p><b>Status:</b> <span id="statusmsg">(Nothing pushed)</span></p> -->
+
+</body>
+</html>
