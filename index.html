@@ -6,55 +6,123 @@
 	<script src="https://download.affectiva.com/js/3.2.1/affdex.js"></script>
 	<script src="script.js"></script>
 
+	<!-- Like SimpleButton2.html, but now more object-like, using new class syntax -->
+
 	<title>Blinking Morse Code</title>
 	<h1 align="center" >BlinkCode</h1>
 	<style type="text/css">
+		html * {
+			font-family: Arial;
+		}
 		.mainDiv {
 			display: flex;
-			margin: 1.5% 1.5%
 		}
 		.metrics {
 			width: 10%;
 		}
 		.display {
 			width: 55%;
+			padding-left: 50px;
 		}
 		.code {
 			width: 35%;
 		}
+		.filler1 {
+			width: 10%;
+		}
+		.morse{
+			padding-left: 50px;
+			width: 55%;
+		}
+		.filler2 {
+			width: 35%;
+		}
+		.mainFiller {
+			/* margin: 1.5% 1.5% */
+			display: flex;
+		}
+		.button {
+		  background-color: #4CAF50; /* Green */
+		  border: none;
+		  color: white;
+		  padding: 15px 32px;
+		  text-align: center;
+		  text-decoration: none;
+		  display: inline-block;
+		  font-size: 16px;
+		  margin: 4px 2px;
+		  cursor: pointer;
+		}
+		.uiDiv {
+			padding-left: 5px;
+		}
+		.button2 {background-color: #f44336;}
 
+		button:disabled,
+		button[disabled]{
+		  border: 1px solid #999999;
+		  background-color: #cccccc;
+		  color: #666666;
+		}
 	</style>
 </head>
 
 <body>
 	<div class="Heading" align="center">
-		<button id="start" onclick="onStart()">Start</button>
-		<button id="stop" onclick="onStop()">Stop</button>
+		<button class="button" id="start" onclick="onStart()">Start</button>
+		<button class="button button2" id="stop" onclick="onStop()" disabled>Stop</button>
 	</div>
 
-	<div class="mainDiv" > 
-		<div class="metrics">
-			<p><span id="eC"></span></p>
-			<p><span id="bR"></span></p>
-			<p><span id="cR"></span></p>
+<div class="mainFiller">
+	<div class = "filler1">
+	</div>
+	<div class = "morse" id = "morse">
+		<h2 id="Morse_Message"></h2>
+	</div>
+	<div class = "filler2">
+	</div>
+</div>
+
+	<div class="mainDiv" >
+		<div class="metrics" id="metricsID">
+			<div id="eCDiv" class = "uiDiv">
+				<p><span id="eC"></span></p>
+				<svg width = "100" height ="20">
+					<rect id = "eCRect" width = "0" height = "20" style = "fill:rgb(56, 255, 56);" />
+				</svg>
+				<br>
+				<img src="dot.png" width = "10" height="10"> / <img src="dash.png" width = "30" height="10">
+				<!-- <p>short / long</p> -->
+			</div>
+			<div id="bRDiv" class = "uiDiv">
+				<p><span id="bR"></span></p>
+				<svg width = "100" height ="20">
+					<rect id = "bRRect" width = "0" height = "20" style = "fill:rgb(56, 255, 56);" />
+				</svg>
+				<br>
+				<img src="space.png" width = "15" height="2.5">
+			</div>
+			<div id="cRDiv" class = "uiDiv">
+				<p><span id="cR"></span></p>
+				<svg width = "100" height ="20">
+					<rect id = "cRRect" width = "0" height = "20" style = "fill:rgb(56, 255, 56);" />
+				</svg>
+				<br>
+				<img src="backspace.png" width = "15" height="10">
+			</div>
 		</div>
 		<div class="display" id="display" >
 			<div id="affdex_elements" width="450" height="450" display="flex"></div>
 			<div id="notepad" width="450" height="450" style="display: none; overflow: hidden;">
 				<h4 id="welcome_tutorial" align="center" >Welcome to the Tutorial </h4>
 				<h4 id="tutorial_instructions" align="center"></h4>
-				<h2 id="English_Message"></h2>
-<!-- 				<h1 id="tutorial_text" align="center" ></h1> -->
+				<h2 id="English_Message" ></h2>
 			</div>
-<!-- 			<p><span id="Clock"></span></p> -->
-			<p><span id="Morse_Message"></span></p>
 		</div>
 
 		<div class = "code">
-			<img src="morse_code.png" align="right" width = "350" height="480">
+			<img src="morse_code.png" align="right" width = "430" height="480">
 		</div>
 	</div>
-	<!-- <p><b>Status:</b> <span id="statusmsg">(Nothing pushed)</span></p> -->
-
 </body>
 </html>

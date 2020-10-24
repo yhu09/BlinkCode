@@ -11,7 +11,7 @@ var close_start;
 var close_end;
 var open_start = 0;
 var open_end;
-var temp_Morse_symbol = "Temp Symbol: ";
+var temp_Morse_symbol = "Morse Code: ";
 var curr_Morse_message = "Morse Message: ";
 var curr_English_message = "";
 var english
@@ -20,6 +20,15 @@ var hi_passed = false;
 var hello_world_passed = false;
 
 onload = function() {
+	var eCDiv = document.getElementById("eCDiv");
+	eCDiv.style.display = "none";
+	var bRDiv = document.getElementById("bRDiv");
+	bRDiv.style.display = "none";
+	var ecDiv = document.getElementById("cRDiv");
+	cRDiv.style.display = "none";
+	var morseDiv = document.getElementById("morse");
+	morseDiv.style.display = "none";
+
 
 	var divRoot = document.getElementById("affdex_elements");
 	var width = 450;
@@ -53,7 +62,12 @@ onload = function() {
 	      	detector.addEventListener("onImageResultsSuccess", function (faces, image, timestamp) {
 	      		if(!initialized) {
 	      			tutorial();
+							document.getElementById("stop").disabled = false;
+	      			document.getElementById("start").disabled = true;
 	      			initialized = true;
+							document.getElementById("eCDiv").style.border = " solid #000000";
+							document.getElementById("bRDiv").style.border = " solid #000000";
+							document.getElementById("cRDiv").style.border = " solid #000000";
 	      		}
 	      		if (!hi_passed) {
 	      			hi_test();
@@ -65,18 +79,30 @@ onload = function() {
 	      			eyes_Metric = Math.round(value["expressions"]["eyeClosure"]);
 	      			brow_Metric = Math.round(value["expressions"]["browRaise"]);
 	      			chin_Metric = Math.round(value["expressions"]["chinRaise"]);
-	      			document.getElementById("bR").innerHTML = "Brow Raise: " + brow_Metric;
 	      			document.getElementById("eC").innerHTML = "Eyes Closed: " + eyes_Metric;
+							document.getElementById("eCRect").setAttribute("width", eyes_Metric.toString());
+	      			document.getElementById("bR").innerHTML = "Brow Raise: " + brow_Metric;
+							document.getElementById("bRRect").setAttribute("width", brow_Metric.toString());
 	      			document.getElementById("cR").innerHTML = "Chin Raise: " + chin_Metric;
+							document.getElementById("cRRect").setAttribute("width", chin_Metric.toString());
 	      			if (brow_Metric > 98) {
 	      				curr_English_message = curr_English_message + " ";
 	      				document.getElementById("English_Message").innerHTML = "Message: " + curr_English_message;
-	      			}
+								var tempBRRECt = document.getElementById("bRRect");
+								tempBRRECt.setAttribute("style", "fill:rgb(56, 255, 56);");
+	      			} else {
+								var tempBRRECt = document.getElementById("bRRect");
+								tempBRRECt.setAttribute("style", "fill:rgb(255, 56, 56);");
+							}
 	      			if (chin_Metric > 80 && !eyes_Closed && !chin_Raised) {
 	      				chin_Raised = true;
 	      				chin_clock = 0;
+								var tempCRREct = document.getElementById("cRRect");
+								tempCRREct.setAttribute("style", "fill:rgb(56, 255, 56);");
 	      			} else if (chin_Metric < 90 && chin_Raised) {
 	      				chin_Raised = false;
+								var tempCRREct = document.getElementById("cRRect");
+								tempCRREct.setAttribute("style", "fill:rgb(255, 56, 56);");
 	      			}
 	      			if (chin_clock > unit) {
 	      				curr_English_message = curr_English_message.slice(0, -1);
@@ -87,21 +113,31 @@ onload = function() {
 	      				eyes_Closed = true;
 	      				close_start = clock;
 	      				open_clock = 0;
+								var tempECRECt = document.getElementById("eCRect");
+								tempECRECt.setAttribute("style", "fill:rgb(56, 255, 56);");
 	      			} else if (eyes_Metric < 90 && eyes_Closed) {
 	      				eyes_Closed = false;
 	      				close_end = clock;
+								var tempECRECt = document.getElementById("eCRect");
+								tempECRECt.setAttribute("style", "fill:rgb(255, 56, 56);");
 	      				generateMorseSymbol(close_start, close_end);
 	      			}
 	      			if (open_clock > unit * 3) {
 	      				generateLetter();
 	      			}
 	      		}
+
+						// var tempBRRECt = document.getElementById("bRRect");
+						// tempBRRECt.setAttribute("style", "fill:rgb(0,0,255);");
+						// var tempCRREct = document.getElementById("cRRect");
+						// tempCRREct.setAttribute("style", "fill:rgb(0,0,255);");
+						// var tempECRECt = document.getElementById("eCRect");
+						// tempECRECt.setAttribute("style", "fill:rgb(0,0,255);");
 	      	});
 	      	detector.addEventListener("onImageResultsFailure", function (image, timestamp, err_detail) {});
 
 	      //onStop callbacks
 	      detector.addEventListener("onStopSuccess", function() {
-	      	document.getElementById("eC").innerHTML = "";
 	      	curr_Morse_message = "Message: ";
 	      });
 	      detector.addEventListener("onStopFailure", function() {});
@@ -122,6 +158,8 @@ onload = function() {
 	  function onStop() {
 	  	detector.stop();
 	  	clearInterval(timer);
+			document.getElementById("stop").disabled = true;
+			document.getElementById("start").disabled = false;
 	  };
 
 	  // Function tracks the closure interval of the eye.
@@ -145,7 +183,7 @@ onload = function() {
 	  		curr_Morse_message = curr_Morse_message + "-";
 	  		temp_Morse_symbol = temp_Morse_symbol + "-";
 	  	}
-	  	document.getElementById("Morse_Message").innerHTML = "Temp Symbol: " + temp_Morse_symbol;
+	  	document.getElementById("Morse_Message").innerHTML = "Morse Code: " + temp_Morse_symbol;
 	  };
 
 	  function generateLetter() {
@@ -155,7 +193,7 @@ onload = function() {
 	  	}
 	  	document.getElementById("English_Message").innerHTML = "Message: " + curr_English_message;
 	  	temp_Morse_symbol = "";
-	  	document.getElementById("Morse_Message").innerHTML = "Temp Symbol: " + temp_Morse_symbol;
+	  	document.getElementById("Morse_Message").innerHTML = "Morse Code: " + temp_Morse_symbol;
 	  	open_clock = 0;
 	  }
 
@@ -166,6 +204,14 @@ onload = function() {
 	  	tutorial.style.display = "inline";
 	  	// document.getElementById("tutorial").innerHTML = "Welcome to the Tutorial";
 	  	document.getElementById("display").style.backgroundColor = "#ffff99";
+			var eCDiv = document.getElementById("eCDiv");
+			eCDiv.style.display = "block";
+			var bRDiv = document.getElementById("bRDiv");
+			bRDiv.style.display = "block";
+			var ecDiv = document.getElementById("cRDiv");
+			cRDiv.style.display = "block";
+			var morseDiv = document.getElementById("morse");
+			morseDiv.style.display = "block";
 	  }
 
 	  	function hi_test() {
@@ -176,9 +222,22 @@ onload = function() {
 			}
 		}
 
+		// function hello_world_test() {
+		// 	document.getElementById("tutorial_instructions").innerHTML = "Please type 'HELLO WORLD'";
+		// 	// document.getElementById("tutorial_text").innerHTML = "HI";
+		// 	var curr = new String(curr_English_message);
+		// 	var hello_world = new String("H E");
+		// 	if (curr.valueOf() == hello_world.valueOf()) {
+		// 		hello_world_passed = true;
+		// 	}
+		// }
+
 		function start_typing() {
 			var tutorial_instructions = document.getElementById("tutorial_instructions");
 			tutorial_instructions.style.display = "none";
+			var tutorial_instructions = document.getElementById("welcome_tutorial");
+			tutorial_instructions.style.display = "none";
+			curr_English_message = "";
 		}
 
 
